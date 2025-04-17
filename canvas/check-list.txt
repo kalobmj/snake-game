@@ -1,0 +1,15 @@
+This is a project I recently did with vanilla JS. My advice would be to break it down into tiny problems and disregard OOP at first. You can always refactor your code after.
+
+OOP is nice but it adds another layer of complexity in this case. Game development requires a different frame of thinking and adding OOP on top of that might feel overwhelming.
+
+Here's what I would start with:
+
+    Code a simple draw loop. Test it by drawing a small black square on top of a gray canvas background.
+
+    Add movement to the black square by incrementing its x or y position inside the draw loop. This will confirm that your loop really works.
+
+    Make a function that draws a grid. The function could take 3 parameters: maxCellsX, maxCellsY, cellSize. In short, maxCellsX and maxCellsY are the number of horizontal and vertical cells and cellSize is the size of each cell. You can use this function in your initial setup to determine the width and height of your canvas (maxCells * cellSize).
+
+    Have fun and keep breaking it down to one small problem at a time!
+
+Feel free to DM me if you'd like more guidance. I'm not an experienced dev and can't help you with Typescript but I enjoy canvas and making things work with OOP lol.
