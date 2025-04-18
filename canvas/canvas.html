@@ -4,11 +4,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>Canvas experiment</title>
+  <style>
+    body {
+      display: flex;
+      height: 100vh;
+      width: auto;
+      justify-content: center;
+      align-items: center;
+      margin: 0
+    }
+
+  </style>
 </head>
 
 <body>
-  <canvas id="canvas" width="300" height="200"></canvas>
-  <script src="../canvas/draw.js" type="application/javascript"></script>
+  <div id="canvas-container">
+    <canvas id="canvas" width="350" height="350"></canvas>
+  </div>
+  <script src="../canvas/blackSquare.js" type="application/javascript"></script>
 </body>
 
 </html>
