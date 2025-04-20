@@ -28,8 +28,8 @@ function drawGrid(maxCellsX, maxCellsY, cellSize) {
   context.fillStyle = 'gray';
   context.fillRect(0, 0, 350, 350);
 
-  // moves black rect starting point
-  context.translate(175, 175);
+  // // moves black rect starting point
+  // context.translate(175, 175);
 
   for (let i=0; i<maxCellsX; i++) {
     for (let j=0; j<maxCellsY; j++) {
@@ -42,7 +42,19 @@ function drawGrid(maxCellsX, maxCellsY, cellSize) {
 
 };
 
-drawGrid(6, 6, 28);
+// aspect ratio use math.round() to prevent blurriness 
+
+// 300 x 264.71 -> Math.Round()
+
+// xCells = 17
+// yCells = 15
+
+// const cellWidth = canvasWith / xCells 
+  // 300px / 17 -> 17.64 ? round
+// const cellHeight = canvasHeight / yCells
+  // 265px / 15 -> 17.66 ?
+
+drawGrid(17, 15, 20);
 
 // Make a function that draws a grid. The function could take 3 parameters: maxCellsX, maxCellsY, cellSize. In short, maxCellsX and maxCellsY are the number of horizontal and vertical cells and cellSize is the size of each cell. You can use this function in your initial setup to determine the width and height of your canvas (maxCells * cellSize).
 
