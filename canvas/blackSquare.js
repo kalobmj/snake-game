@@ -54,7 +54,7 @@ function drawGrid(maxCellsX, maxCellsY, cellSize) {
 // const cellHeight = canvasHeight / yCells
   // 265px / 15 -> 17.66 ?
 
-drawGrid(17, 15, 20);
+drawGrid(17, 15, 22);
 
 // Make a function that draws a grid. The function could take 3 parameters: maxCellsX, maxCellsY, cellSize. In short, maxCellsX and maxCellsY are the number of horizontal and vertical cells and cellSize is the size of each cell. You can use this function in your initial setup to determine the width and height of your canvas (maxCells * cellSize).
 
