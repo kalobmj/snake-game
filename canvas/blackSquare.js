@@ -21,41 +21,66 @@
 
 // };
 
-function drawGrid(maxCellsX, maxCellsY, cellSize) {
-  const context = document.getElementById('canvas').getContext('2d');
+// function drawGrid(maxCellsX, maxCellsY, cellSize) {
+//   const context = document.getElementById('canvas').getContext('2d');
 
-  // create gray canvas
-  context.fillStyle = 'gray';
-  context.fillRect(0, 0, 350, 350);
+//   // create gray canvas
+//   context.fillStyle = 'gray';
+//   context.fillRect(0, 0, 500, 500);
 
-  // // moves black rect starting point
-  // context.translate(175, 175);
+//   // // moves black rect starting point
+//   // context.translate(175, 175);
 
-  for (let i=0; i<maxCellsX; i++) {
-    for (let j=0; j<maxCellsY; j++) {
-      context.strokeStyle = 'gold';
-      context.strokeRect(i*cellSize, j*cellSize, cellSize, cellSize);
-      context.fillStyle = 'aquamarine';
-      context.fillRect(i*cellSize, j*cellSize, cellSize, cellSize)
-    }
+//   for (let i=0; i<maxCellsX; i++) {
+//     for (let j=0; j<maxCellsY; j++) {
+//       context.strokeStyle = 'gold';
+//       context.strokeRect(i*cellSize, j*cellSize, cellSize, cellSize);
+//       context.fillStyle = 'aquamarine';
+//       context.fillRect(i*cellSize, j*cellSize, cellSize, cellSize)
+//     }
+//   }
+
+// };
+
+// drawGrid(17, 15, 29);
+
+// fillRect(x, y, width, height)
+
+// 17 wide
+// 15 tall
+
+const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
+// const cellSize = 20.02;
+
+// context.translate(0.5, 0.5)
+
+const rows = 15;
+const cols = 17;
+
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
+const cellSize = Math.min(canvasWidth / cols, canvasHeight / rows);
+
+console.log(cellSize)
+
+function setBackground(c1, c2) {
+
+  context.fillStyle = c1;
+  context.strokeStyle = c2;
+
+  context.fillRect(0, 0, canvas.height, canvas.width);
+
+  for (let i=0; i<canvas.width; i+=cellSize) {
+    context.moveTo(i, 0);
+    context.lineTo(i, canvas.height);
+  }
+  for (let j=0; j<canvas.height; j+=cellSize) {
+    context.moveTo(0, j);
+    context.lineTo(canvas.width, j);
   }
 
-};
+  context.stroke();
+}
 
-// aspect ratio use math.round() to prevent blurriness 
-
-// 300 x 264.71 -> Math.Round()
-
-// xCells = 17
-// yCells = 15
-
-// const cellWidth = canvasWith / xCells 
-  // 300px / 17 -> 17.64 ? round
-// const cellHeight = canvasHeight / yCells
-  // 265px / 15 -> 17.66 ?
-
-drawGrid(17, 15, 22);
-
-// Make a function that draws a grid. The function could take 3 parameters: maxCellsX, maxCellsY, cellSize. In short, maxCellsX and maxCellsY are the number of horizontal and vertical cells and cellSize is the size of each cell. You can use this function in your initial setup to determine the width and height of your canvas (maxCells * cellSize).
-
-// draw();
+setBackground('white', 'black')

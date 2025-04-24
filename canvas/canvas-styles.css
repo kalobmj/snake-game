@@ -2,6 +2,12 @@ body {
     background-color: aqua;
 }
 
+#canvas {
+    width: 100%;
+    /* height: 85vh; */
+    display: block; /* Ensures height takes effect */
+  }
+
 /* 
     320px — 480px: Mobile devices.
     481px — 768px: iPads, Tablets.
