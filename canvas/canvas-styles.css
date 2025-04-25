@@ -8,6 +8,23 @@ body {
     display: block; /* Ensures height takes effect */
   }
 
+  #title {
+    /* margin-top: 10px; */
+    padding-top: 12px;
+  }
+
+  #score {
+    margin-top: 5px;
+  }
+
+  #high-score {
+    margin-bottom: 10px;
+  }
+
+  #button {
+    margin-bottom: 20px;
+  }
+
 /* 
     320px — 480px: Mobile devices.
     481px — 768px: iPads, Tablets.
@@ -20,11 +37,22 @@ body {
     /* Styles to be applied when the screen width is 600px or less */
     body {
         background-color: antiquewhite;
+        padding: 15px;
+        /* margin: 20px; */
     }
 
-    #canvas {
-      width: 300px;
-      height: 265px; 
-    }
+    /* #canvas {
+      width: 90%;
+      height: 90%; 
+    } */
     /* Other styles for smaller screens */
   }
+
+  /* Apply these styles to screens with a minimum width of 768px (e.g., tablets, laptops) */
+@media screen and (min-width: 768px) {
+  /* Your CSS styles here */
+  body {
+    background-color: aquamarine; /* Example style */
+    /* font-size: 20px;          Example style */
+  }
+}
