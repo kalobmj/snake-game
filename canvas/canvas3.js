@@ -32,7 +32,15 @@ for (let i=0; i<rows; i++) {
 
 // function to draw square
 function createSquare(x, y, color) {
+    context.fillStyle = color;
+    context.fillRect(x, y, cellSize, cellSize);
+};
 
-
-
+// function to check for collisions with 2 sets of coordinates
+function checkForCollisions(x1, y1, x2, y2) {
+    if (x1 === x2 && y1 === y2) {
+        return true;
+    } else {
+        return false;
+    };
 };
