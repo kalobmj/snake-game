@@ -7,10 +7,13 @@ const context = canvas.getContext('2d');
 // food (apple)
 
 let appleSize = 1; // apple will always be 1 block in size
+let appleColor = '#ff3636'
 
 // snake
 
+let snakeColor = '#3498db'
 let snakeSize = 2; // snake will be 2 blocks long at start
+
 
 
 const drawCustomGrid = (rows, cols, cellSize) => {
@@ -31,4 +34,4 @@ const drawCustomGrid = (rows, cols, cellSize) => {
 };
 
 // 15 rows, 17 cols, 30 cellSize
-drawCustomGrid(15, 17, 35);
+drawCustomGrid(15, 17, 30);
