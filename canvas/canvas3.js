@@ -13,6 +13,9 @@ let direction = ''; // 'right', 'left' etc...
 let directionQueue = ''; // next move
 let score = 0;
 
+// game over... 😔
+let gameOver = false;
+
 // canvas dimensions
 canvas.height = rows * cellSize;
 canvas.width = cols * cellSize;
@@ -22,13 +25,10 @@ for (let i=0; i<rows; i++) {
     for (let j=0; j<cols; j++) {
         // var to determine if cell is even or odd
         const isEven = (i + j) % 2 === 0;
-        context.fillStyle = isEven ? '#a2d149' : '#8bb042';
+        context.fillStyle = isEven ? color1 : color2;
         context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize)
     }
 };
-
-
-// fillRect(x, y, width, height)
 
 // function to draw square
 function createSquare(x, y, color) {
@@ -43,4 +43,14 @@ function checkForCollisions(x1, y1, x2, y2) {
     } else {
         return false;
     };
+};
+
+// get snake and apple on canvas (game ready before pressing play)
+
+
+if (gameOver) {
+    // logic for if gameOver === true (player lost and game is over)
+} else {
+    // logic for when gameOver === false (game is still going)
+    // setInterval(mainWrapperFunction, fps)
 };
