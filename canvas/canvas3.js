@@ -11,6 +11,10 @@ const snakeColor = '#3498db'; // blue
 const appleColor = '#ff3636'; // red
 let direction = ''; // 'right', 'left' etc...
 let directionQueue = ''; // next move
+
+let appleLocation = [];
+let snakeLocation = [];
+
 let score = 0;
 
 // game over... 😔
@@ -45,29 +49,58 @@ function checkForCollisions(x1, y1, x2, y2) {
     };
 };
 
+// takes coords and checks if the cell is outside the game board
+function checkOutOfBounds(x, y) {
+    if (x < 0 || y < 0 || x > (cols*cellSize) || y > (rows*cellSize)) {
+        return false;
+    } else {
+        return true;
+    };
+};
+
 // get snake and apple on canvas (game ready before pressing play)
 function makeApple() {
-    let x = Math.floor(Math.random() * cols) * cellSize;
-    let y = Math.floor(Math.random() * rows) * cellSize;
-    createSquare(x, y, appleColor);
+    let x1 = Math.floor(Math.random() * cols) * cellSize;
+    let y1 = Math.floor(Math.random() * rows) * cellSize;
+    // save location of the apple
+    appleLocation.push({x: x1, y: y1})
+
+    console.log({appleLocation})
+
+    createSquare(x1, y1, appleColor);
 };
 
 // setInterval(makeApple, fps)
 makeApple();
 
 function makeSnake() {
-
     let len = snakeLength; // 2
 
     // random coords for snake heaad
     let x = Math.floor(Math.random() * cols) * cellSize;
     let y = Math.floor(Math.random() * rows) * cellSize;
+    createSquare(x, y, snakeColor);
 
     // 2-4 possible locations for snake tail
+    let tailCoords = [{x: 0, y: -30}, {x: 30, y: 0}, {x: 0, y: 30}, {x: -30, y: 0}];
 
+    // up, right, down, left
+    for (let i=0; i<tailCoords.length; i++) {
+        // copy of original coordinates
+        let x2 = x + tailCoords[i].x;
+        let y2 = y + tailCoords[i].y;
 
-
+        if (checkOutOfBounds(x2, y2)) {
+            createSquare(x2, y2, snakeColor)
+            return;
+        };
+    };
 };
+
+// setInterval(makeSnake, 2000);
+makeSnake();
+
+// snake will move automatically at game start. to move snake, test the 3 cells in each direction, if the direction only has one or less squares, do not start the game in that direction. if 3 or more squares in that direction, move the snake in that direction when user pressed game button.
 
 if (gameOver) {
     // logic for if gameOver === true (player lost and game is over)
