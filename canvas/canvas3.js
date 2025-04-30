@@ -46,27 +46,28 @@ function checkForCollisions(x1, y1, x2, y2) {
 };
 
 // get snake and apple on canvas (game ready before pressing play)
-
 function makeApple() {
-
-    console.log({rows})
-    console.log({cols})
-
     let x = Math.floor(Math.random() * cols) * cellSize;
     let y = Math.floor(Math.random() * rows) * cellSize;
-    // let y = Math.floor(Math.random(cols * cellSize));
-
-    console.log({x})
-    console.log({y})
-    console.log({cellSize})
-
     createSquare(x, y, appleColor);
 };
 
 // setInterval(makeApple, fps)
-
 makeApple();
 
+function makeSnake() {
+
+    let len = snakeLength; // 2
+
+    // random coords for snake heaad
+    let x = Math.floor(Math.random() * cols) * cellSize;
+    let y = Math.floor(Math.random() * rows) * cellSize;
+
+    // 2-4 possible locations for snake tail
+
+
+
+};
 
 if (gameOver) {
     // logic for if gameOver === true (player lost and game is over)
