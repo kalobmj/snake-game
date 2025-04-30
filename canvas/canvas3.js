@@ -6,9 +6,9 @@ const rows = 15; // 15 square long
 const cols = 17; // 17 squares wide
 const color1 = '#a2d149'; // light green
 const color2 = '#8bb042'; // dark green
-const snakeLength = 2; // default snake length
 const snakeColor = '#3498db'; // blue
 const appleColor = '#ff3636'; // red
+let snakeLength = 1; // default snake length
 let direction = ''; // 'right', 'left' etc...
 let directionQueue = ''; // next move
 
@@ -42,6 +42,7 @@ function createSquare(x, y, color) {
 
 // function to check for collisions with 2 sets of coordinates
 function checkForCollisions(x1, y1, x2, y2) {
+    // if collision return true, else false
     if (x1 === x2 && y1 === y2) {
         return true;
     } else {
@@ -60,26 +61,72 @@ function checkOutOfBounds(x, y) {
 
 // get snake and apple on canvas (game ready before pressing play)
 function makeApple() {
-    let x1 = Math.floor(Math.random() * cols) * cellSize;
-    let y1 = Math.floor(Math.random() * rows) * cellSize;
-    // save location of the apple
-    appleLocation.push({x: x1, y: y1})
 
-    console.log({appleLocation})
+    // create logic to check collision for the entire snake body, the apple cannot spwan on top of the snakes body.
 
-    createSquare(x1, y1, appleColor);
+    // snake length at start is 1, so this is the beginning of the game
+    if (snakeLength === 1) {
+
+        let x1 = Math.floor(Math.random() * cols) * cellSize;
+        let y1 = Math.floor(Math.random() * rows) * cellSize;
+        // save location of the apple
+        appleLocation.push({x: x1, y: y1})
+
+        console.log({appleLocation})
+
+        createSquare(x1, y1, appleColor);
+
+    } else {
+        // logic to loop through snake location, since snakeLocation arr should be over 1 length
+        let x1 = Math.floor(Math.random() * cols) * cellSize;
+        let y1 = Math.floor(Math.random() * rows) * cellSize;
+
+        let count = 0;
+
+        // for loop through snakes location
+        for (let i=0; i<snakeLocation.length; i++) {
+            let x2 = snakeLocation[i].x;
+            let y2 = snakeLocation[i].y;
+            if (!checkForCollisions(x1, y1, x2, y2)) {
+                count++
+                // appleLocation.push({x: x1, y: y1})
+                // console.log({appleLocation})
+                // createSquare(x1, y1, appleColor);
+                // return;
+            }
+        } // end for loop
+        if (count === snakeLocation.length) {
+            appleLocation.push({x: x1, y: y1})
+            console.log({appleLocation})
+            createSquare(x1, y1, appleColor);
+            return;
+        } else {
+            makeApple();
+        }
+    };
+
+    // let x1 = Math.floor(Math.random() * cols) * cellSize;
+    // let y1 = Math.floor(Math.random() * rows) * cellSize;
+    // // save location of the apple
+    // appleLocation.push({x: x1, y: y1})
+
+    // console.log({appleLocation})
+
+    // createSquare(x1, y1, appleColor);
 };
 
 // setInterval(makeApple, fps)
 makeApple();
 
 function makeSnake() {
-    let len = snakeLength; // 2
+    let len = snakeLength; // 1
 
     // random coords for snake heaad
-    let x = Math.floor(Math.random() * cols) * cellSize;
-    let y = Math.floor(Math.random() * rows) * cellSize;
-    createSquare(x, y, snakeColor);
+    let x1 = Math.floor(Math.random() * cols) * cellSize;
+    let y1 = Math.floor(Math.random() * rows) * cellSize;
+    createSquare(x1, y1, snakeColor);
+    // push head of snake to snakeLocation
+    snakeLocation.push({x: x1, y: y1});
 
     // 2-4 possible locations for snake tail
     let tailCoords = [{x: 0, y: -30}, {x: 30, y: 0}, {x: 0, y: 30}, {x: -30, y: 0}];
@@ -87,11 +134,15 @@ function makeSnake() {
     // up, right, down, left
     for (let i=0; i<tailCoords.length; i++) {
         // copy of original coordinates
-        let x2 = x + tailCoords[i].x;
-        let y2 = y + tailCoords[i].y;
+        let x2 = x1 + tailCoords[i].x;
+        let y2 = y1 + tailCoords[i].y;
 
         if (checkOutOfBounds(x2, y2)) {
             createSquare(x2, y2, snakeColor)
+            snakeLocation.push({x: x2, y: y2});
+            console.log({snakeLocation})
+            len++
+            snakeLength = len;
             return;
         };
     };
