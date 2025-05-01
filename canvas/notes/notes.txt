@@ -1,0 +1,4 @@
+we have the apple and snake on the board
+
+now we just have to move them
+
