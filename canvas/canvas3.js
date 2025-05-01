@@ -282,7 +282,7 @@ function pathTester(x, y) {
 
     // util to test all directions: up, right, down, left
 
-    if ()
+    // if ()
 
 };
 
