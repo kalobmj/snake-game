@@ -118,12 +118,27 @@ function makeApple() {
 // setInterval(makeApple, fps)
 makeApple();
 
+// snake is going over apple
+
+// creates snake with 2 length, does not add to existing snake
 function makeSnake() {
     let len = snakeLength; // 1
 
-    // random coords for snake heaad
+    // location of apple, test if tail will go over the apple
+    let appleX = appleLocation[0].x;
+    let appleY = appleLocation[0].y;
+
+    // random coords for snake head
     let x1 = Math.floor(Math.random() * cols) * cellSize;
     let y1 = Math.floor(Math.random() * rows) * cellSize;
+
+    // if snakeHead is not out of bounds, and not on top of the current apple
+    if (checkOutOfBounds(x1, y1) && !checkForCollisions(x1, y1, appleX, appleY)) {
+
+
+
+    };
+
     createSquare(x1, y1, snakeColor);
     // push head of snake to snakeLocation
     snakeLocation.push({x: x1, y: y1});
@@ -137,7 +152,9 @@ function makeSnake() {
         let x2 = x1 + tailCoords[i].x;
         let y2 = y1 + tailCoords[i].y;
 
-        if (checkOutOfBounds(x2, y2)) {
+
+        // checking if current cell is not out of bounds, and if cell is not the same as the apple
+        if (checkOutOfBounds(x2, y2) && !checkForCollisions(x2, y2, appleX, appleY)) {
             createSquare(x2, y2, snakeColor)
             snakeLocation.push({x: x2, y: y2});
             console.log({snakeLocation})
@@ -149,6 +166,7 @@ function makeSnake() {
 };
 
 // setInterval(makeSnake, 2000);
+// setInterval(window.location.reload(), 5000)
 makeSnake();
 
 // snake will move automatically at game start. to move snake, test the 3 cells in each direction, if the direction only has one or less squares, do not start the game in that direction. if 3 or more squares in that direction, move the snake in that direction when user pressed game button.
