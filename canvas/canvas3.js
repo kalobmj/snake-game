@@ -245,179 +245,61 @@ function getSnakeGoing(x, y) {
 // function to move snake
 function moveSnake(direction) {
 
-    let newSnakeLocation = [];
+    // this function will take a direction, and update the snake based on that direction
+    // we will work logic in for when the snake head hits the apple (basically have head take over apple and tail stays in the same spot)
+    // this function will run on every interval
+    // basic logic is to test the snakeHead, then determine if the new space is or is not an apple
 
-    console.log({ snakeLocation })
+    // *if apple, just color apple spot with snake blue color, move apple location to front of snakeLocation array.
 
-    console.log({ direction })
+    // **if not apple, have head take up next cell spot, and remove the last part of tail with a green spot. in array, new cell will be the new head, and we will pop the last element.
 
-    // cellSize = 30;
-    // you need to recolor the behind cell when the snake moves
-    // determine based on the coordinates, if its even or odd, then color the cell accordingly
+    // directions: [up, right, down, left]
 
+    console.log({direction})
+    console.log({appleLocation})
 
-    // this logic basically is: take current direction, loop through our snakeLocation array, create our new snake using updated coords. update our array after we are done looping. Then I guess just take the last tail off unless we hit an apple.
+    let appleX = appleLocation[0].x;
+    let appleY = appleLocation[0].y;
 
-    // need to fix logic so when snake moves, it just doesn't move the entire body, the cell behind the head should take its heads last place
+    console.log({appleX})
+    console.log({appleY})
 
-    if (direction === 'up') {
-        for (let i = 0; i < snakeLocation.length; i++) {
-            console.log('direction up, heres i: ', i)
+    // first: test movement in passed direction
+    // second: check if that movement would have snakeHead eating apple or not
 
-            let currCellX = snakeLocation[i].x;
-            let currCellY = snakeLocation[i].y;
+    // possibly develop a pathTester() util funcition...
 
-            createSquare(currCellX + tailCoords[0].x, currCellY + tailCoords[0].y, snakeColor);
+    // have 4 if statements that run the pathTester() function to test every direction -> if (direction === 'right') and so on..
 
-            let cellCols = currCellX / 30;
-            let cellRows = currCellY / 30;
+    // try to have the if statements be short, and have a block scoped code that all the if statements can run off of.
 
-            const isEven = (cellCols + cellRows) % 2 === 0;
+    // if (checkForCollisions)
 
-            context.fillStyle = isEven ? color1 : color2;
-            context.fillRect(currCellX, currCellY, cellSize, cellSize)
+};
 
-            snakeLocation[i].x = currCellX + tailCoords[0].x;
-            snakeLocation[i].y = currCellY + tailCoords[0].y;
-        }
-    };
+function pathTester(x, y) {
 
-    if (direction === 'right') {
-        for (let i = 0; i < snakeLocation.length; i++) {
-            console.log('direction right, heres i: ', i)
+    // util to test all directions: up, right, down, left
 
-            // logic here will be:
-            // if working with snake head (snakeLocation[0]), we will move the cell in that direction
-            // every other cell of the snake will go into the postition of the cell that came before it, and so on..
-            // last cell will become a part of the board. (light green or dark green)
-
-            // snakeHead
-            if (i === 0) {
-
-                // current snakeHead coords
-                let currCellX = snakeLocation[i].x;
-                let currCellY = snakeLocation[i].y;
-
-                // create new square moving to the right
-                createSquare(currCellX + tailCoords[1].x, currCellY + tailCoords[1].y, snakeColor);
-
-                // update current cell coordinates with updated one
-                // snakeLocation[i].x = currCellX + tailCoords[1].x;
-                // snakeLocation[i].y = currCellY + tailCoords[1].y;
-
-                // get updated coordinates of snakeHead
-                let x1 = currCellX + tailCoords[1].x;
-                let y1 = currCellY + tailCoords[1].y;
-
-                // push new snakeHead coordinates into our localSnakeLocation that will replace our global snakeLocation var
-                newSnakeLocation.push({x: x1, y: y1})
-
-            } else if (i === (snakeLocation.length - 1)) {
-
-                // with our logic, all we have to do is extend the head of the snake by 1, and then cut off the tail by one, while keeping the rest the same. (we will continue to test this)
-                // so here all we will do is change its color to green, push the location of the cell that came before it (head at start) to our new array since that is the tail moving.
-
-                // get cols and rows numbers
-                let cellCols = currCellX / 30;
-                let cellRows = currCellY / 30;
-
-                // check if even or odd
-                const isEven = (cellCols + cellRows) % 2 === 0;
-
-                // based on if cell is even or odd, color correctly
-                context.fillStyle = isEven ? color1 : color2;
-                context.fillRect(currCellX, currCellY, cellSize, cellSize)
-
-                // // create square in cell position before it
-                // createSquare(currCellX + tailCoords[1].x, currCellY + tailCoords[1].y, snakeColor);
-
-                // here we push the location of the cell ahead of our ending (the head) to our new array, because that is our new ending.
-                newSnakeLocation.push(snakeLocation[i-1].x, snakeLocation[i-1].y);
-
-            } else {
-
-                // the logic here is to update the middle of our snake. Pretty much all we will be doing is 
-                
-            }
-
-            let currCellX = snakeLocation[i].x;
-            let currCellY = snakeLocation[i].y;
-
-            createSquare(currCellX + tailCoords[1].x, currCellY + tailCoords[1].y, snakeColor);
-
-            let cellCols = currCellX / 30;
-            let cellRows = currCellY / 30;
-
-            const isEven = (cellCols + cellRows) % 2 === 0;
-
-            context.fillStyle = isEven ? color1 : color2;
-            context.fillRect(currCellX, currCellY, cellSize, cellSize)
-
-            snakeLocation[i].x = currCellX + tailCoords[1].x;
-            snakeLocation[i].y = currCellY + tailCoords[1].y;
-        }
-    };
-
-    if (direction === 'down') {
-        for (let i = 0; i < snakeLocation.length; i++) {
-            console.log('direction down, heres i: ', i)
-
-            let currCellX = snakeLocation[i].x;
-            let currCellY = snakeLocation[i].y;
-
-            createSquare(currCellX + tailCoords[2].x, currCellY + tailCoords[2].y, snakeColor);
-
-            let cellCols = currCellX / 30;
-            let cellRows = currCellY / 30;
-
-            const isEven = (cellCols + cellRows) % 2 === 0;
-
-            context.fillStyle = isEven ? color1 : color2;
-            context.fillRect(currCellX, currCellY, cellSize, cellSize)
-
-            snakeLocation[i].x = currCellX + tailCoords[2].x;
-            snakeLocation[i].y = currCellY + tailCoords[2].y;
-        }
-    };
-
-    if (direction === 'left') {
-        for (let i = 0; i < snakeLocation.length; i++) {
-            console.log('direction left, heres i: ', i)
-
-            let currCellX = snakeLocation[i].x;
-            let currCellY = snakeLocation[i].y;
-
-            createSquare(currCellX + tailCoords[3].x, currCellY + tailCoords[3].y, snakeColor);
-
-            let cellCols = currCellX / 30;
-            let cellRows = currCellY / 30;
-
-            const isEven = (cellCols + cellRows) % 2 === 0;
-
-            context.fillStyle = isEven ? color1 : color2;
-            context.fillRect(currCellX, currCellY, cellSize, cellSize)
-
-            snakeLocation[i].x = currCellX + tailCoords[3].x;
-            snakeLocation[i].y = currCellY + tailCoords[3].y;
-        }
-    };
+    if ()
 
 };
 
 // when user clicks play button, get snake going using snakeHead location (snakeLocation[0]) to test
 playButton.addEventListener('click', () => {
 
+    // coords of our snakeHead
     console.log(snakeLocation[0].x)
     console.log(snakeLocation[0].y)
 
+    // testing 4 paths of snakeHead
     getSnakeGoing(snakeLocation[0].x, snakeLocation[0].y)
 
-    // every direction is working except up (probably has to do with the tail pointing up, and the snake is going in onto istelf), (up is turning snake into one square)
+    // moving snake
     moveSnake(direction);
 
-    // logic is working fine but is testing snake moving on itself
-
-})
+});
 
 // need seperate function for moving snake and getting it going cause of apple
 // need 3 or more free spaces to move on game start, where as general snake moving can be done with collisions or apples in the way.
