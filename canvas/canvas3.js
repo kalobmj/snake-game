@@ -19,11 +19,11 @@ let snakeLocation = [];
 let score = 0;
 
 // 2-4 possible locations for snake tail (up, right, down, left) in that order
-let tailCoords = [
-    { x: 0, y: -30 },
-    { x: 30, y: 0 },
-    { x: 0, y: 30 },
-    { x: -30, y: 0 }
+let directionCoords = [
+    { x: 0, y: -cellSize },
+    { x: cellSize, y: 0 },
+    { x: 0, y: cellSize },
+    { x: -cellSize, y: 0 }
 ];
 
 // game over... 😔
@@ -75,18 +75,57 @@ function makeSnake2() {
 
     createSquare(x1, y1, snakeColor);
     createSquare(x1+cellSize, y1, snakeColor);
-    snakeLocation.push({x: x1, y: y1});
     snakeLocation.push({x: x1+cellSize, y: y1});
+    snakeLocation.push({x: x1, y: y1});
+
+    console.log({snakeLocation})
 };
 
 makeSnake2();
 
-// function to move the snake
+// function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
+    console.log('snake moving')
 
+    direction = 'right'
 
+    if (direction === 'right') {
+        for (let i=0; i<snakeLocation.length; i++) {
 
+            snakeLocation[i].x += directionCoords[1].x;
+
+            let snakeX = snakeLocation[i].x;
+            let snakeY = snakeLocation[i].y;
+
+            createSquare(snakeX, snakeY, snakeColor)
+        };
+
+        // logic to cut snake tail and update snakeLocation array
+        // can turn this into a util
+
+        // last elem of snakeLocation will be the tail
+        let snakeTail = snakeLocation[snakeLocation.length - 1];
+        console.log({snakeLocation})
+        console.log({snakeTail})
+
+        // is a cell even or odd? 
+        const isEven = ((snakeTail.x + snakeTail.y) / cellSize) % 2 === 0
+
+        console.log({isEven})
+
+        // based on isEven, assign color to pass to createSquare
+        const color = isEven ? color2 : color1;
+        createSquare(snakeTail.x - cellSize, snakeTail.y, color)
+
+        console.log({snakeLocation})
+
+        // 10:30pm -> do this for all directions, also need to go back in this right direction and add checkers for outofbounds and apple checks. also work in the directionqueue.
+
+    };
+    
 };
+
+// setInterval(moveSnake, 2000)
 
 // function to place apple on board (works at all times)
 function makeApple() {
