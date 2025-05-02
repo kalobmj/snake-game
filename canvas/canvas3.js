@@ -51,6 +51,10 @@ for (let i = 0; i < rows; i++) {
 
 // function to draw square
 function createSquare(x, y, color) {
+
+    console.log({x})
+    console.log({y})
+
     context.fillStyle = color;
     context.fillRect(x, y, cellSize, cellSize);
 };
@@ -91,9 +95,12 @@ makeSnake2();
 
 // snake is not moving on first right-arrow
 
+// 5/2 -> okay so this is basically working, we just need to refactor and simplify it. also work on the other directions..
+
 // function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
     console.log('snake moving')
+    console.log({direction})
 
     console.log({snakeLocation})
 
@@ -108,8 +115,10 @@ function moveSnake() {
     if (direction === 'right') {
         
         // increasing x by cellsize (30)
+        console.log({x1})
         x1+=directionCoords[1].x;
-
+        console.log({x1})
+        
     };
 
     console.log({snakeLocation})
@@ -117,21 +126,48 @@ function moveSnake() {
     console.log('snake elem 2', snakeLocation[1])
 
     // get current tail and save it, so we can use its coords to color the board color
-    let oldTail = snakeLocation[snakeLocation.length-1];
+    let oldTail = { ...snakeLocation[snakeLocation.length - 1] };
     console.log({oldTail})
 
+    // console.log(oldTail[0].x)
+    // console.log(oldTail[0].y)
+
+
+    console.log({snakeLocation})
+
+    console.log('snakeLocation length pre tail: ', snakeLocation.length)
+    
+    
     // tail is last element of snakelocation, using pop removes it
     let tail = snakeLocation.pop();
-
+    
     console.log({tail})
+    
+    console.log({snakeLocation})
+
+    console.log('snakeLocation length post tail: ', snakeLocation.length) // 1
+
+    console.log('tailx', tail.x)
+    console.log('taily', tail.y)
 
     // update tail with new coords for head (new head)
     tail.x = x1;
     tail.y = y1;
+
+    console.log('tailx', tail.x)
+    console.log('taily', tail.y)
+
+    console.log('this is tail with updated coords: ', tail)
+
     // take tail (new head) and add it to the beginning of snakeLength array
     snakeLocation.unshift(tail);
 
+    console.log({snakeLocation})
+    console.log(snakeLocation.length)
+
     for (let i=0; i<snakeLocation.length; i++) {
+        console.log(snakeLocation[i].x)
+        console.log(snakeLocation[i].y)
         createSquare(snakeLocation[i].x, snakeLocation[i].y, snakeColor)
     }
 
@@ -143,8 +179,15 @@ function moveSnake() {
 
     // this is coloring the old tail a board green color, depending if its on an even or odd cell (this is why we keep track of the old tail before we pop it)
 
-    console.log(oldTail.x)
-    console.log(oldTail.y)
+    
+    console.log({oldTail})
+    
+    // console.log(oldTail[0].x)
+    // console.log(oldTail[0].y)
+
+    // console.log(oldTail[0].x + 1)
+
+    console.log({color})
 
     createSquare(oldTail.x, oldTail.y, color)
 
