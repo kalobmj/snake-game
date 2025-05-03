@@ -1,6 +1,7 @@
 const canvas = document.getElementById('canvas'); // canvas
 const context = canvas.getContext('2d'); // canvas context
-const playButton = document.getElementById('button') // play button
+const playButton = document.getElementById('button'); // play button
+const userScore = document.getElementById('score'); // player score
 const cellSize = 30; // play with the size of this
 const fps = 80; // try 70 60 100 etc...
 const rows = 15; // 15 square long
@@ -85,8 +86,9 @@ makeSnake2();
 // function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
     console.log('snake moving');
+    console.log(`snake moving in ${direction} direction`);
 
-    // need to work on snake going out of bounds
+    console.log({snakeLocation})
 
     // coords of snakeHead
     let x1 = snakeLocation[0].x;
@@ -104,10 +106,11 @@ function moveSnake() {
 
     // if snakehead is out of bounds, end the game 😈
     if (!checkOutOfBounds(x1, y1)) {
-
         gameOver = true;
-        
     };
+    checkGameStatus();
+
+    // since 
 
     // get current tail and save it, so we can use its coords to color the board color
     let oldTail = { ...snakeLocation[snakeLocation.length - 1] };
@@ -119,8 +122,30 @@ function moveSnake() {
     tail.x = x1;
     tail.y = y1;
 
-    // take tail (new head) and add it to the beginning of snakeLocation array
-    snakeLocation.unshift(tail);
+    // at this point we have an updated tail (the new head), and we have a copy of the old tail.
+    // we will do a check to see if our tail (new head) collides with our current fruit coordinates
+    
+    // if new head takes place of fruit, we will continue to add it to the front, but keep our old tail (this is how the snake grows)
+    // if not, we will just keep the code as it is already
+
+    // console.log(appleLocation[0].x)
+    // console.log(appleLocation[0].y)
+
+    if (checkForCollisions(tail.x, tail.y, appleLocation[0].x, appleLocation[0].y)) {
+        // if new head is on a fruit spot, add the tail to the front consuming the fruit
+        snakeLocation.unshift(tail);
+        // push the old tail so that the snake grows by one cell
+        snakeLocation.push(oldTail);
+        score++;
+        userScore.innerText = `score: ${score}`;
+        makeApple();
+    } else {
+        // if new head is not on a fruit spot, just add the tail to the front
+        snakeLocation.unshift(tail);
+    };
+
+    // // take tail (new head) and add it to the beginning of snakeLocation array
+    // snakeLocation.unshift(tail);
 
     // coloring in new snake
     for (let i=0; i<snakeLocation.length; i++) {
@@ -132,10 +157,10 @@ function moveSnake() {
     const color = isEven ? color1 : color2;
     createSquare(oldTail.x, oldTail.y, color);
 
+
+
     console.log('moveSnake ended');
 };
-
-// setInterval(moveSnake, 2000)
 
 // function to place apple on board (works at all times)
 function makeApple() {
@@ -156,47 +181,50 @@ function makeApple() {
         }
     } while (collision);
 
+    appleLocation = [{x: x1, y: y1}];
     createSquare(x1, y1, appleColor);
 };
 
 makeApple();
-// setInterval(makeApple, 1);
 
 // board addEventListener ArrowLeft, ArrowUp, ArrowDown, ArrowRight
 canvas.addEventListener('keydown', (e) => {
-
-    // need to include logic where snake cannot go backwards on itself
-    // for example if snake is going right, it cannot go left because that would have the snake going in on itself.
-
     if (e.key === 'ArrowRight' && direction != 'left') {
         console.log('right arrow key pressed');
         direction = 'right';
-        // direction queue logic here
-        moveSnake();
     } else if (e.key === 'ArrowLeft' && direction != 'right') {
         console.log('left arrow key pressed');
         direction = 'left';
-        moveSnake();
     } else if (e.key === 'ArrowUp' && direction != 'down') {
         console.log('up arrow key pressed');
         direction = 'up';
-        moveSnake();
     } else if (e.key === 'ArrowDown' && direction != 'up') {
         console.log('down arrow key pressed');
         direction = 'down';
-        moveSnake();
     };
-
 });
+
+// possibly wrap all game running functions in one func, and ending game functions in one func
+
+// add more to fps to slow it down
+
+// need to work on snake colliding with it's own body
 
 // when user clicks play button, get snake going using snakeHead location (snakeLocation[0]) to test
 playButton.addEventListener('click', () => {
 
     // coords of our snakeHead
-    console.log(snakeLocation[0].x)
-    console.log(snakeLocation[0].y)
+    console.log(snakeLocation[0].x);
+    console.log(snakeLocation[0].y);
 
-    setInterval(moveSnake, 1000)
+    console.log({appleLocation})
+
+    console.log(appleLocation[0].x);
+    console.log(appleLocation[0].y);
+
+    canvas.focus();
+
+    setInterval(moveSnake, fps)
     setInterval(checkGameStatus, 1000)
 
 });
