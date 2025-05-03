@@ -124,12 +124,18 @@ function moveSnake() {
 
     // at this point we have an updated tail (the new head), and we have a copy of the old tail.
     // we will do a check to see if our tail (new head) collides with our current fruit coordinates
+
+    // checking for body collisions
+
+    for (let i=0; i<snakeLocation.length; i++) {
+        if (checkForCollisions(snakeLocation[i].x, snakeLocation[i].y, tail.x, tail.y)) {
+            gameOver = true;
+            checkGameStatus();
+        }
+    };
     
     // if new head takes place of fruit, we will continue to add it to the front, but keep our old tail (this is how the snake grows)
     // if not, we will just keep the code as it is already
-
-    // console.log(appleLocation[0].x)
-    // console.log(appleLocation[0].y)
 
     if (checkForCollisions(tail.x, tail.y, appleLocation[0].x, appleLocation[0].y)) {
         // if new head is on a fruit spot, add the tail to the front consuming the fruit
@@ -147,7 +153,7 @@ function moveSnake() {
     // // take tail (new head) and add it to the beginning of snakeLocation array
     // snakeLocation.unshift(tail);
 
-    // coloring in new snake
+    // coloring in new snake && checking for body collisions
     for (let i=0; i<snakeLocation.length; i++) {
         createSquare(snakeLocation[i].x, snakeLocation[i].y, snakeColor)
     };
