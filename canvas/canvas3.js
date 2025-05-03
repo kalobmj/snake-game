@@ -9,13 +9,10 @@ const color1 = '#a2d149'; // light green
 const color2 = '#8bb042'; // dark green
 const snakeColor = '#3498db'; // blue
 const appleColor = '#ff3636'; // red
-let snakeLength = 1; // default snake length
 let direction = 'right'; // defaults right, 'right', 'left' etc...
 let directionQueue = ''; // next move
-
-let appleLocation = [];
-let snakeLocation = [];
-
+let appleLocation = []; // coordinates of apple
+let snakeLocation = []; // coordinates of each cell of snake
 let score = 0;
 
 // this will focus user on the canvas
@@ -29,8 +26,6 @@ let directionCoords = [
     { x: 0, y: cellSize },
     { x: -cellSize, y: 0 }
 ];
-
-// console.log(directionCoords)
 
 // game over... 😔
 let gameOver = false;
@@ -51,10 +46,6 @@ for (let i = 0; i < rows; i++) {
 
 // function to draw square
 function createSquare(x, y, color) {
-
-    console.log({x})
-    console.log({y})
-
     context.fillStyle = color;
     context.fillRect(x, y, cellSize, cellSize);
 };
@@ -87,131 +78,68 @@ function makeSnake2() {
     createSquare(x1+cellSize, y1, snakeColor);
     snakeLocation.push({x: x1+cellSize, y: y1}); // head
     snakeLocation.push({x: x1, y: y1}); // tail
-
-    console.log({snakeLocation})
 };
 
 makeSnake2();
 
-// snake is not moving on first right-arrow
-
-// 5/2 -> okay so this is basically working, we just need to refactor and simplify it. also work on the other directions..
-
 // function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
-    console.log('snake moving')
-    console.log({direction})
+    console.log('snake moving');
 
-    console.log({snakeLocation})
+    // need to work on snake going out of bounds
 
     // coords of snakeHead
     let x1 = snakeLocation[0].x;
     let y1 = snakeLocation[0].y;
 
-    console.log({x1})
-    console.log({y1})
-
-    // if current direction is right
     if (direction === 'right') {
-        
-        // increasing x by cellsize (30)
-        console.log({x1})
         x1+=directionCoords[1].x;
-        console.log({x1})
+    } else if (direction === 'left') {
+        x1+=directionCoords[3].x;
+    } else if (direction === 'up') {
+        y1+=directionCoords[0].y;
+    } else if (direction === 'down') {
+        y1+=directionCoords[2].y;
+    };
+
+    // if snakehead is out of bounds, end the game 😈
+    if (!checkOutOfBounds(x1, y1)) {
+
+        gameOver = true;
         
     };
 
-    console.log({snakeLocation})
-    console.log('snake elem 1', snakeLocation[0]) // 
-    console.log('snake elem 2', snakeLocation[1])
-
     // get current tail and save it, so we can use its coords to color the board color
     let oldTail = { ...snakeLocation[snakeLocation.length - 1] };
-    console.log({oldTail})
 
-    // console.log(oldTail[0].x)
-    // console.log(oldTail[0].y)
-
-
-    console.log({snakeLocation})
-
-    console.log('snakeLocation length pre tail: ', snakeLocation.length)
-    
-    
     // tail is last element of snakelocation, using pop removes it
     let tail = snakeLocation.pop();
-    
-    console.log({tail})
-    
-    console.log({snakeLocation})
-
-    console.log('snakeLocation length post tail: ', snakeLocation.length) // 1
-
-    console.log('tailx', tail.x)
-    console.log('taily', tail.y)
 
     // update tail with new coords for head (new head)
     tail.x = x1;
     tail.y = y1;
 
-    console.log('tailx', tail.x)
-    console.log('taily', tail.y)
-
-    console.log('this is tail with updated coords: ', tail)
-
-    // take tail (new head) and add it to the beginning of snakeLength array
+    // take tail (new head) and add it to the beginning of snakeLocation array
     snakeLocation.unshift(tail);
 
-    console.log({snakeLocation})
-    console.log(snakeLocation.length)
-
+    // coloring in new snake
     for (let i=0; i<snakeLocation.length; i++) {
-        console.log(snakeLocation[i].x)
-        console.log(snakeLocation[i].y)
         createSquare(snakeLocation[i].x, snakeLocation[i].y, snakeColor)
-    }
+    };
 
+    // color old tail
     const isEven = ((oldTail.x + oldTail.y) / cellSize) % 2 === 0;
-
-    console.log({isEven})
-
     const color = isEven ? color1 : color2;
+    createSquare(oldTail.x, oldTail.y, color);
 
-    // this is coloring the old tail a board green color, depending if its on an even or odd cell (this is why we keep track of the old tail before we pop it)
-
-    
-    console.log({oldTail})
-    
-    // console.log(oldTail[0].x)
-    // console.log(oldTail[0].y)
-
-    // console.log(oldTail[0].x + 1)
-
-    console.log({color})
-
-    createSquare(oldTail.x, oldTail.y, color)
-
-    console.log({snakeLocation});
-
-    console.log('moveSnake ended')
-
-    // directionQueue will be user last input, 
-    
-    // V you only need to update the head V
-    // the tail = last elem
-    // take that last elem using .pop(), give it the updated x and y vals
-    // then take that tail and move it to the front with updated vals using .unshift().
-    // doing all of this will remove the tail, and add the moved coords for the new head, the rest will remain the same and don't need changing...
-    
+    console.log('moveSnake ended');
 };
 
 // setInterval(moveSnake, 2000)
 
 // function to place apple on board (works at all times)
 function makeApple() {
-    let x1;
-    let y1;
-    let collision;
+    let x1, y1, collision;
 
     do {
         collision = false;
@@ -234,37 +162,30 @@ function makeApple() {
 makeApple();
 // setInterval(makeApple, 1);
 
-// below will be the logic for taking user input (arrow keys) and adding the correct direction, updating direction queue and moving the snake in the current direction
-
-// addEventListener for canvas tracking keydowns
-
-// ArrowLeft, ArrowUp, ArrowDown, ArrowRight
+// board addEventListener ArrowLeft, ArrowUp, ArrowDown, ArrowRight
 canvas.addEventListener('keydown', (e) => {
 
-    if (e.key === 'ArrowRight') {
+    // need to include logic where snake cannot go backwards on itself
+    // for example if snake is going right, it cannot go left because that would have the snake going in on itself.
+
+    if (e.key === 'ArrowRight' && direction != 'left') {
         console.log('right arrow key pressed');
-        // logic for user pressing right arrow key
-        direction = 'right'
-        moveSnake()
-    }
-    // if (e.key === 'ArrowLeft') {
-    //     console.log('left arrow key pressed');
-    //     // logic for user pressing right arrow key
-    //     direction = 'left'
-    //     moveSnake(direction)
-    // }
-    // if (e.key === 'ArrowUp') {
-    //     console.log('up arrow key pressed');
-    //     // logic for user pressing right arrow key
-    //     direction = 'up'
-    //     moveSnake(direction)
-    // }
-    // if (e.key === 'ArrowDown') {
-    //     console.log('down arrow key pressed');
-    //     // logic for user pressing right arrow key
-    //     direction = 'down'
-    //     moveSnake(direction)
-    // }
+        direction = 'right';
+        // direction queue logic here
+        moveSnake();
+    } else if (e.key === 'ArrowLeft' && direction != 'right') {
+        console.log('left arrow key pressed');
+        direction = 'left';
+        moveSnake();
+    } else if (e.key === 'ArrowUp' && direction != 'down') {
+        console.log('up arrow key pressed');
+        direction = 'up';
+        moveSnake();
+    } else if (e.key === 'ArrowDown' && direction != 'up') {
+        console.log('down arrow key pressed');
+        direction = 'down';
+        moveSnake();
+    };
 
 });
 
@@ -276,13 +197,20 @@ playButton.addEventListener('click', () => {
     console.log(snakeLocation[0].y)
 
     setInterval(moveSnake, 1000)
+    setInterval(checkGameStatus, 1000)
 
 });
 
-if (gameOver) {
-    // logic for if gameOver === true (player lost and game is over)
-    // window.location.reload()
-} else {
-    // logic for when gameOver === false (game is still going)
-    // setInterval(mainWrapperFunction, fps)
+// checks if game is over or not
+function checkGameStatus() {
+    if (gameOver) {
+        // logic for if gameOver === true (player lost and game is over)
+
+        // in future we will not be using window reload, will have a game over screen and button for user to press to restart game...
+        window.location.reload();
+
+    } else {
+        // logic for when gameOver === false (game is still going)
+        // setInterval(mainWrapperFunction, fps)
+    };
 };
