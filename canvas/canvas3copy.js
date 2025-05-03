@@ -15,8 +15,8 @@ let direction = 'right'; // defaults right, 'right', 'left' etc...
 let directionQueue = ''; // next move
 let appleLocation = []; // coordinates of apple
 let snakeLocation = []; // coordinates of each cell of snake
-let score = 0;
 let gameInterval; // setInterval to use for later
+let score = 0;
 
 // this will focus user on the canvas
 canvas.setAttribute('tabindex', 1);
@@ -93,6 +93,10 @@ function makeSnake() {
     createSquare(x1 + cellSize, y1, snakeColor);
     snakeLocation.push({ x: x1 + cellSize, y: y1 }); // head
     snakeLocation.push({ x: x1, y: y1 }); // tail
+
+    console.log({cellSize})
+    console.log({snakeLocation})
+
 };
 
 // makeSnake();
@@ -100,6 +104,8 @@ function makeSnake() {
 // function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
     console.log(`snake moving in ${direction} direction`);
+    
+    console.log({gameOver})
 
     // coords of snakeHead
     let x1 = snakeLocation[0].x;
@@ -190,23 +196,32 @@ function makeApple() {
 
 // board addEventListener for when user pressed arrow keys
 canvas.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' && direction != 'left') {
-        console.log('right arrow key pressed');
-        direction = 'right';
-    } else if (e.key === 'ArrowLeft' && direction != 'right') {
-        console.log('left arrow key pressed');
-        direction = 'left';
-    } else if (e.key === 'ArrowUp' && direction != 'down') {
-        console.log('up arrow key pressed');
-        direction = 'up';
-    } else if (e.key === 'ArrowDown' && direction != 'up') {
-        console.log('down arrow key pressed');
-        direction = 'down';
+
+    if (!gameOver) {
+        if (e.key === 'ArrowRight' && direction != 'left') {
+            console.log('right arrow key pressed');
+            direction = 'right';
+        } else if (e.key === 'ArrowLeft' && direction != 'right') {
+            console.log('left arrow key pressed');
+            direction = 'left';
+        } else if (e.key === 'ArrowUp' && direction != 'down') {
+            console.log('up arrow key pressed');
+            direction = 'up';
+        } else if (e.key === 'ArrowDown' && direction != 'up') {
+            console.log('down arrow key pressed');
+            direction = 'down';
+        };
     };
+
 });
 
 // play button addEventListener
 playButton.addEventListener('click', () => {
+
+    // if (gameRunning) {
+    //     return;
+    // };
+
     canvas.focus();
 
     // interval here
@@ -216,10 +231,6 @@ playButton.addEventListener('click', () => {
 
 // get game ready
 function setupGame() {
-    gameOver = false;
-    appleLocation = [];
-    snakeLocation = [];
-    direction = 'right'
     makeBoard();
     makeSnake();
     makeApple();
@@ -228,6 +239,8 @@ function setupGame() {
 
 // start game
 function runGame() {
+    
+    // makeBoard();
     moveSnake();
     checkGameStatus();
 };
@@ -237,7 +250,11 @@ function endGame() {
 
     // clear interval here
     clearInterval(gameInterval);
-    score = 0;
+    
+    gameOver = false;
+    appleLocation = [];
+    snakeLocation = [];
+    direction = 'right';
     setupGame();
 
 };
