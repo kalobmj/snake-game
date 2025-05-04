@@ -87,6 +87,9 @@ function checkOutOfBounds(x, y) {
 
 // function to place snake on board
 function makeSnake() {
+
+    snakeLocation = [];
+
     let x1 = 4 * cellSize;
     let y1 = 7 * cellSize;
 
@@ -140,7 +143,9 @@ function moveSnake() {
     if (!checkOutOfBounds(x1, y1)) {
         gameOver = true;
     };
-    checkGameStatus();
+    if (checkGameStatus()) {
+        return;
+    }
 
     // copy of tail for later
     let oldTail = { ...snakeLocation[snakeLocation.length - 1] };
@@ -244,6 +249,7 @@ playButton.addEventListener('click', () => {
     setupGame();
 
 
+
     // interval here
     gameInterval = setInterval(runGame, fps)
     // setInterval(checkGameStatus, 1000)
@@ -294,6 +300,7 @@ function checkGameStatus() {
             localStorage.setItem('high-score', score)
         };
         endGame();
+        return true
         // window.location.reload();
     } else {
         // logic for when gameOver === false (game is still going)
