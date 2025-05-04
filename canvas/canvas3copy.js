@@ -235,7 +235,14 @@ playButton.addEventListener('click', () => {
     //     return;
     // };
 
+    // context.reset();
+
     canvas.focus();
+
+    // this below gets the game going again, but its broken
+    endGame();
+    setupGame();
+
 
     // interval here
     gameInterval = setInterval(runGame, fps)
@@ -255,13 +262,11 @@ function setupGame() {
 
 // start game
 function runGame() {
-    
-    // makeBoard();
 
     gameRunning = true;
-
     moveSnake();
     checkGameStatus();
+
 };
 
 // end game 
@@ -269,14 +274,14 @@ function endGame() {
 
     // clear interval here
     clearInterval(gameInterval);
-    
     gameOver = false;
-
     gameRunning = false;
-
-    appleLocation = [];
-    snakeLocation = [];
     direction = 'right';
+    score = 0;
+    // appleLocation = [];
+    // snakeLocation = [];
+    snakeLocation.length = 0;
+    appleLocation.length = 0;
     setupGame();
 
 };
