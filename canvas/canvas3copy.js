@@ -16,6 +16,7 @@ let directionQueue = ''; // next move
 let appleLocation = []; // coordinates of apple
 let snakeLocation = []; // coordinates of each cell of snake
 let gameInterval; // setInterval to use for later
+let gameRunning = false;
 let score = 0;
 
 // this will focus user on the canvas
@@ -89,6 +90,9 @@ function makeSnake() {
     let x1 = 4 * cellSize;
     let y1 = 7 * cellSize;
 
+    console.log('checking snakeLocation in func');
+    console.log({snakeLocation})
+
     createSquare(x1, y1, snakeColor);
     createSquare(x1 + cellSize, y1, snakeColor);
     snakeLocation.push({ x: x1 + cellSize, y: y1 }); // head
@@ -99,18 +103,25 @@ function makeSnake() {
 
 };
 
-// makeSnake();
-
 // function to move the snake, it's already placed down at this point, 'right' is the default direction
 function moveSnake() {
     console.log(`snake moving in ${direction} direction`);
     
     console.log({gameOver})
 
+    // let snakeLocationCopy = [ ...snakeLocation ];
+
+    // console.log('snakelocation copy: ', snakeLocationCopy);
+    // console.log({snakeLocationCopy})
+
     // coords of snakeHead
     let x1 = snakeLocation[0].x;
     let y1 = snakeLocation[0].y;
 
+    console.log('coords pre change')
+    console.log({x1})
+    console.log({y1})
+    
     if (direction === 'right') {
         x1 += directionCoords[1].x;
     } else if (direction === 'left') {
@@ -120,6 +131,10 @@ function moveSnake() {
     } else if (direction === 'down') {
         y1 += directionCoords[2].y;
     };
+    
+    console.log('coords post change')
+    console.log({x1})
+    console.log({y1})
 
     // if snakehead is out of bounds, end the game 😈
     if (!checkOutOfBounds(x1, y1)) {
@@ -192,12 +207,10 @@ function makeApple() {
     createSquare(x1, y1, appleColor);
 };
 
-// makeApple();
-
 // board addEventListener for when user pressed arrow keys
 canvas.addEventListener('keydown', (e) => {
 
-    if (!gameOver) {
+    if (gameRunning) {
         if (e.key === 'ArrowRight' && direction != 'left') {
             console.log('right arrow key pressed');
             direction = 'right';
@@ -232,15 +245,21 @@ playButton.addEventListener('click', () => {
 // get game ready
 function setupGame() {
     makeBoard();
+    console.log({snakeLocation}); // is empty at this point
+    console.log(snakeLocation.length)
     makeSnake();
     makeApple();
     score = 0;
+    console.log({snakeLocation});
 };
 
 // start game
 function runGame() {
     
     // makeBoard();
+
+    gameRunning = true;
+
     moveSnake();
     checkGameStatus();
 };
@@ -252,6 +271,9 @@ function endGame() {
     clearInterval(gameInterval);
     
     gameOver = false;
+
+    gameRunning = false;
+
     appleLocation = [];
     snakeLocation = [];
     direction = 'right';
