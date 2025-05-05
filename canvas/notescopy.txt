@@ -1,0 +1,47 @@
+1. Procedural Style (Flat Functions and State)
+
+    Description: Use plain functions with shared global or module-level state.
+
+    Pros: Simple and quick to get started.
+
+    Cons: Can get messy and hard to manage as the game grows in complexity.
+
+2. Object-Oriented Programming (OOP) with Classes
+
+    Description: Break your game into classes like Game, Snake, Food, and Board.
+
+    Pros: Easier to manage, reuse, and extend. Makes the code more organized and readable.
+
+    Cons: Slight learning curve if you’re new to OOP.
+
+3. Modular Pattern with Objects/Factories
+
+    Description: Instead of classes, use functions that return objects (factory functions) to encapsulate behavior.
+
+    Pros: Avoids this, allows more flexibility than classes in some cases.
+
+    Cons: Slightly more verbose than classes; may require more setup for complex interactions.
+
+4. Entity-Component-System (ECS) Architecture (Advanced)
+
+    Description: Entities are data containers, components hold specific behavior, and systems handle logic.
+
+    Pros: Extremely scalable; used in professional game engines.
+
+    Cons: Overkill for a basic snake game and harder to understand at first.
+
+5. Functional Programming Style
+
+    Description: Pure functions, immutability, and minimal side effects. Game state passed and returned between functions.
+
+    Pros: Easier to test, debug, and reason about.
+
+    Cons: Can be abstract and unintuitive, especially when dealing with things like animations or canvas state.
+
+6. Hybrid Approach
+
+    Description: Use a combination of the above—e.g., OOP for the snake and game logic, procedural for setup.
+
+    Pros: Flexible and practical.
+
+    Cons: Needs discipline to avoid turning into a messy mix

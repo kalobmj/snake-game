@@ -1,0 +1,33 @@
+OOP is Commonly Used In:
+
+    C++ and Java — These languages are very OOP-heavy and encourage building programs with class hierarchies.
+
+    Python — Also supports OOP very cleanly.
+
+    JavaScript — JS wasn’t originally designed with OOP in mind, but modern JS (ES6 and beyond) has solid class support and is great for learning OOP.
+
+Why JS + OOP is a Great Combo for You:
+
+    You’ll practice class-based design like you'd do in Java or C++.
+
+    You’ll learn how to structure programs more cleanly, making it easier to scale your code later.
+
+    It’ll prepare you for college-level CS concepts, since many courses use Java or C++ to teach OOP.
+
+What You’ll Typically Create in Your Snake Game (OOP Style):
+
+Here’s how you might start thinking in terms of classes:
+
+    Snake → Keeps track of position, direction, and handles movement.
+
+    Food → Holds the position and handles respawning.
+
+    Game → Coordinates everything: sets intervals, detects collisions, updates score.
+
+    Maybe Board → Handles drawing things on the canvas or screen.
+
+Each class would have:
+
+    Properties (like this.body, this.position, etc.)
+
+    Methods (like .move(), .draw(), .checkCollision())
