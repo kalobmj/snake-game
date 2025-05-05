@@ -18,7 +18,7 @@ const snakeColor = '#3498db'; // blue 🟦
 const appleColor = '#ff3636'; // red 🔴
 
 let dir = 'right'; // right by default
-let apple = []; // 🍎
+// let apple = []; // 🍎
 let snake = []; // 🐍
 
 let gameInterval;
@@ -54,6 +54,8 @@ const directions = [
 // util functions
 
 // structure
+
+// Methods (like .move(), .draw(), .checkCollision())
 
 // snake class (position, direction, handles movement)
 
