@@ -14,12 +14,20 @@ let bob = new Person('accountant', 'man');
 
 // Methods (like .move(), .draw(), .checkCollision())
 
+// setTimeout(() => {
+//     console.log(`There is a ${bob.type} named Bob and...`);
+// }, 2000);
+
+// setTimeout(() => {
+//     console.log(`They work as an ${bob.job} !!!`)
+// }, 5000);
+
 class apple {
     constructor(pos, color) {
         this.pos = pos;
         this.color = color;
     }
-};
+}
 
 console.log(apple.pos);
 console.log(apple.color);
@@ -32,15 +40,19 @@ apple.pos = {
     y: Math.floor(Math.random() * 15) * 30
 };
 
+// apple respawning after snake eats it will come here
+
 apple.color = 'light-red';
 
 console.log(apple.pos);
 console.log(apple.color);
 
-// setTimeout(() => {
-//     console.log(`There is a ${bob.type} named Bob and...`);
-// }, 2000);
+class snake {
+    constructor(pos, dir, color) {
+        this.pos = pos;
+        this.dir = dir;
+        this.color = color;
+    }
+}
 
-// setTimeout(() => {
-//     console.log(`They work as an ${bob.job} !!!`)
-// }, 5000);
+
