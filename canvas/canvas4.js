@@ -55,4 +55,16 @@ const directions = [
 
 // structure
 
+// snake class (position, direction, handles movement)
 
+
+
+// food class (position, handles respawning)
+
+// game (coordinates everything, sets intverals, detects collisions, updates score)
+
+// board (handles drawing things on canvas)
+
+// each class needs : props, methods 
+
+//
