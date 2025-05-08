@@ -55,4 +55,38 @@ class snake {
     }
 }
 
+class User {
+    constructor(name, age) {
+        this.age = age;
+        this.name = name;
+    }
 
+    greet() {
+        console.log(`${this.name} is my name, hello !`)
+        // return 3+4
+    }
+
+}
+
+console.log(User.name)
+console.log(User.age)
+
+User.name = 'jerry';
+User.age = 23;
+
+console.log(User.name)
+console.log(User.age)
+
+// console.log(User.greet())
+// User.greet()
+
+const student = new User;
+
+student.age = 21
+
+student.name = 'lex'
+
+console.log(student.age)
+console.log(student.name)
+
+student.greet()
