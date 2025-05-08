@@ -69,7 +69,9 @@ class Snake {
 
     }
 
-    draw() {
+    draw(x, y) {
+        
+        // logic for fillRect with x y and color here
 
     }
 
