@@ -59,7 +59,25 @@ const directions = [
 
 // snake class (position, direction, handles movement)
 
+class Snake {
+    constructor(pos, dir) {
+        this.pos = []; // coords will be pushed here
+        this.dir = dir;
+    }
 
+    move() {
+
+    }
+
+    draw() {
+
+    }
+
+    checkCollision() {
+
+    }
+
+}
 
 // food class (position, handles respawning)
 
