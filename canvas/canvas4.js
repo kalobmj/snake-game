@@ -1,3 +1,6 @@
+
+// review some of ur var, ur classes have constructors that can replace some of these // 
+
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d'); // canvas context
 
@@ -23,7 +26,7 @@ let snake = []; // 🐍
 
 let gameInterval;
 let gameRunning = false;
-let gameOver = false;
+// let gameOver = false;
 let score = 0;
 
 // focus on canvas
@@ -31,8 +34,8 @@ canvas.setAttribute('tabindex', 1);
 canvas.focus();
 
 // dimensions
-canvas.height = rows*cellSize;
-canvas.clientWidth = cols*cellSize;
+canvas.height = rows * cellSize;
+canvas.clientWidth = cols * cellSize;
 
 // retrieving highScore from localStorage.. if it exists..
 let storedHighScore = localStorage.getItem('high-score');
@@ -49,85 +52,119 @@ const directions = [
     { x: -cellSize, y: 0 }
 ];
 
-// util functions
-
-// structure
-
-// Methods (like .move(), .draw(), .checkCollision())
-
-// snake class (position, direction, handles movement)
-
 class Snake {
-    constructor(pos, dir) {
+    constructor(x, y, dir, body) {
         this.pos = []; // coords will be pushed here
         this.dir = dir;
+        this.body = []; // array of snake coordinates (body) 🐍
     }
 
+    // spawn snake (draw snake when you have coordinates)
+    drawSnake(body) {
+        for (const cell of body) {
+            Board.draw(cell.x, cell.y, snakeColor)
+        };
+    };
+
     move() {
+        let x = Snake.body[0].x;
+        let y = Snake.body[0].y;
 
-        // move based on dir
-        // checkCollision for snakhead hitting apple
-        // pop tail and reuse it if apple hit
-
-        let x = snake[0].x;
-        let y = snake[0].y;
-
-        if (dir === 'right') {
-            x+=directions[1].x;
-        } else if (dir === 'left') {
-            x+=directions[3].x;
-        } else if (dir === 'up') {
-            y+=directions[0].y;
-        } else if (dir === 'down') {
-            y+=directions[2].y;
+        if (Game.dir === 'right') {
+            x += directions[1].x;
+        } else if (Game.dir === 'left') {
+            x += directions[3].x;
+        } else if (Game.dir === 'up') {
+            y += directions[0].y;
+        } else if (Game.dir === 'down') {
+            y += directions[2].y;
         };
 
-        // check bounds
-        if (this.checkBounds(x, y)) {
-            gameOver = true;
+        // check snakeHead out of bounds
+        if (Game.checkBounds(x, y)) {
+            EndGame.over = true;
         };
 
         // check gameState
-        
+        if (!EndGame.over) {
+            // if game not over
+            // pop removes tail (moves snake)
+            let newHead = Snake.body.pop();
 
+            // copy old tail for if snake eats apple (we keep it)
+            let oldTail = { ...newHead };
+
+            // replace tail with coordinates of updated head
+            newHead.x = Snake.body[0].x;
+            newHead.y = Snake.body[0].y;
+
+            // check body collision logic here :
+            for (const cell of Snake.body) {
+                if (Game.checkCollision(newHead.x, newHead.y, cell.x, cell.y)) {
+                    EndGame.over = true;
+                    gameOver();
+                    return;
+                }
+            }
+
+            // check for collision with apple (snake eats apple 😋)
+            if (Game.checkCollision(Snake.body[0].x, Snake.body[0].y, Apple.x, Apple.y)) {
+                // keep old tail, and move new head to front
+                Snake.body.unshift(newHead);
+                snake.body.push(oldTail);
+            } else {
+                // no apple eaten 🥲
+                Snake.body.unshift(newHead);
+            }
+        } else {
+            // end game method
+            gameOver();
+            return;
+        }
     }
-
-    draw(x, y) {
-        
-        // logic for fillRect with x y and color here
-        context.fillRect(x, y, snakeColor); // snakeColor cause we are in snake
-
-    }
-
 }
 
 // food class (position, handles respawning)
+class Apple {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    spawnApple() {
+
+        // apple cannot spawn on top of snake head, snake body
+
+
+
+    }
+}
 
 // game (coordinates everything, sets intverals, detects collisions, updates score)
-
 class Game {
     constructor(dir, x, y, x1, y1, gameOver, gameRunning) {
         this.x = x;
         this.y = y;
         this.x1 = x1;
         this.y1 = y1;
-        this.dir = dir;
+        this.dir = 'right';
         this.gameOver = gameOver;
         this.gameRunning = gameRunning;
     }
 
     // sets intervals
-    
+
     // collisions
-    
+
     // updates scores
 
     checkCollision(x, y, x1, y1) {
-
-        // logic to check whether snake head hits an apple or not
-
-        // check if 2 spot collide, or if snakhead hits apple
-
+        // collision or not
+        if (x === x1 && y === y1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     checkBounds(x, y) {
@@ -136,10 +173,42 @@ class Game {
 
     }
 
+    checkStatus() {
+
+
+
+    }
 }
 
 // board (handles drawing things on canvas)
+class Board {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
 
-// each class needs : props, methods 
+    draw(x, y, color) {
+        context.fillRect(x, y, color);
+    }
+}
 
-//
+// class Setup
+
+// class CheckGame
+
+// class EndGame
+
+// possible replace for gameOver -> if this is true on interval check. restart game
+class EndGame {
+    constructor() {
+        // game over default false
+        this.over = false;
+    }
+
+    gameOver() {
+
+
+
+    }
+}
