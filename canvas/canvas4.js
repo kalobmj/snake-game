@@ -52,6 +52,12 @@ const directions = [
     { x: -cellSize, y: 0 }
 ];
 
+//
+
+// arrow key add event listeners here: 
+
+//
+
 class Snake {
     constructor(x, y, dir, body) {
         this.pos = []; // coords will be pushed here
@@ -198,7 +204,6 @@ class Board {
 // class CheckGame
 
 // class EndGame
-
 // possible replace for gameOver -> if this is true on interval check. restart game
 class EndGame {
     constructor() {

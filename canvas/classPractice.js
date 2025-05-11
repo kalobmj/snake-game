@@ -68,6 +68,8 @@ class User {
 
 }
 
+// test 123
+
 console.log(User.name)
 console.log(User.age)
 
