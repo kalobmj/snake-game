@@ -43,12 +43,10 @@ if (storedHighScore) {
 };
 
 const directions = [
-    
     { x: 0, y: -cellSize },
     { x: cellSize, y: 0 },
     { x: 0, y: cellSize },
     { x: -cellSize, y: 0 }
-
 ];
 
 // util functions
@@ -108,8 +106,14 @@ class Snake {
 // game (coordinates everything, sets intverals, detects collisions, updates score)
 
 class Game {
-    constructor() {
-
+    constructor(dir, x, y, x1, y1, gameOver, gameRunning) {
+        this.x = x;
+        this.y = y;
+        this.x1 = x1;
+        this.y1 = y1;
+        this.dir = dir;
+        this.gameOver = gameOver;
+        this.gameRunning = gameRunning;
     }
 
     // sets intervals
@@ -118,7 +122,7 @@ class Game {
     
     // updates scores
 
-    checkCollision(pos1, pos2) {
+    checkCollision(x, y, x1, y1) {
 
         // logic to check whether snake head hits an apple or not
 
