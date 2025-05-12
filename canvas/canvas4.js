@@ -237,11 +237,20 @@ class Board {
 // class Setup
 
 class Setup {
-
     constructor() {
-        
+        this.status = true;
     }
 
+    static makeBoard() {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                // var to determine if cell is even or odd
+                const isEven = (i + j) % 2 === 0;
+                context.fillStyle = isEven ? color1 : color2;
+                context.fillRect(j * cellSize, i * cellSize, cellSize, cellSize)
+            }
+        }
+    }
 }
 
 // class CheckGame
@@ -268,3 +277,14 @@ class EndGame {
 
     }
 }
+
+// have to 
+// const gameSetup = new Setup();
+
+// // setup board
+Setup.makeBoard();
+
+// static functions are able to be used without creating another instance of the class
+
+// gameSetup.makeBoard();
+
