@@ -55,7 +55,6 @@ const directions = [
 //
 
 // arrow key add event listeners here:
-
 // board addEventListener ArrowLeft, ArrowUp, ArrowDown, ArrowRight
 canvas.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' && dir != 'left') {
@@ -155,21 +154,36 @@ class Apple {
     }
 
     spawnApple() {
+        let x1, y1, collision;
 
-        // apple cannot spawn on top of snake head, snake body
+        do {
+            collision = false;
+            x1 = Math.floor(Math.random() * cols) * cellSize;
+            y1 = Math.floor(Math.random() * rows) * cellSize;
 
+            for (let i = 0; i < Snake.body.length; i++) {
+                let x2 = Snake.body[i].x;
+                let y2 = Snake.body[i].y;
+                if (Game.checkCollision(x1, y1, x2, y2)) {
+                    collision = true;
+                    break;
+                }
+            }
+        } while (collision);
 
-
+        Apple.x = x1;
+        Apple.y = y1;
+        Board.draw(Apple.x, Apple.y, appleColor);
     }
 }
 
 // game (coordinates everything, sets intverals, detects collisions, updates score)
 class Game {
     constructor(dir, x, y, x1, y1, gameOver, gameRunning) {
-        this.x = x;
-        this.y = y;
-        this.x1 = x1;
-        this.y1 = y1;
+        // this.x = x;
+        // this.y = y;
+        // this.x1 = x1;
+        // this.y1 = y1;
         this.dir = 'right';
         this.gameOver = gameOver;
         this.gameRunning = gameRunning;
@@ -182,7 +196,6 @@ class Game {
     // updates scores
 
     checkCollision(x, y, x1, y1) {
-        // collision or not
         if (x === x1 && y === y1) {
             return true;
         } else {
@@ -191,15 +204,20 @@ class Game {
     }
 
     checkBounds(x, y) {
-
-        // logic to check if snakehead is out of bounds
-
+        if (x < 0 || y < 0 || x >= (cols * cellSize) || y >= (rows * cellSize)) {
+            return false;
+        } else {
+            return true;
+        };
     }
 
-    checkStatus() {
+    checkStatus(EndGame) {
+        if (EndGame.over) {
 
+            // logic to end game
+            // call EndGame.gameOver()
 
-
+        }
     }
 }
 
@@ -218,7 +236,23 @@ class Board {
 
 // class Setup
 
+class Setup {
+
+    constructor() {
+        
+    }
+
+}
+
 // class CheckGame
+
+class CheckGame {
+
+    constructor() {
+        this.status = true;
+    }
+
+}
 
 // class EndGame
 // possible replace for gameOver -> if this is true on interval check. restart game
