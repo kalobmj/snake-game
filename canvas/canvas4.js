@@ -54,7 +54,24 @@ const directions = [
 
 //
 
-// arrow key add event listeners here: 
+// arrow key add event listeners here:
+
+// board addEventListener ArrowLeft, ArrowUp, ArrowDown, ArrowRight
+canvas.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' && dir != 'left') {
+        console.log('right arrow key pressed');
+        dir = 'right';
+    } else if (e.key === 'ArrowLeft' && dir != 'right') {
+        console.log('left arrow key pressed');
+        dir = 'left';
+    } else if (e.key === 'ArrowUp' && dir != 'down') {
+        console.log('up arrow key pressed');
+        dir = 'up';
+    } else if (e.key === 'ArrowDown' && dir != 'up') {
+        console.log('down arrow key pressed');
+        dir = 'down';
+    };
+});
 
 //
 
