@@ -76,9 +76,8 @@ playButton.addEventListener('click', () => {
 
     canvas.focus();
 
-    // snake needs to come after apple, since it depends on it
-    Snake.createSnake();
-    Apple.spawnApple();
+    // hitting play will start game here:
+    
 
 });
 
@@ -88,8 +87,9 @@ class Snake {
     constructor(x, y, dir, body) {
         this.pos = []; // coords will be pushed here
         this.dir = dir;
-        this.body = []; // array of snake coordinates (body) 🐍
     }
+
+    static body = []; // array of snake coordinates (body) 🐍
 
     // create snake on game start
     static createSnake() {
@@ -97,7 +97,8 @@ class Snake {
         let y1 = 7 * cellSize;
 
         Board.draw(x1, y1, snakeColor);
-        Board.draw(x1+cellSize, y1, snakeColor);
+        Board.draw(x1 + cellSize, y1, snakeColor);
+        console.log(Snake.body)
         Snake.body.push({ x: x1 + cellSize, y: y1 }); // head
         Snake.body.push({ x: x1, y: y1 }); // tail
     }
@@ -212,7 +213,7 @@ class Game {
 
     // updates scores
 
-    checkCollision(x, y, x1, y1) {
+    static checkCollision(x, y, x1, y1) {
         if (x === x1 && y === y1) {
             return true;
         } else {
@@ -331,4 +332,9 @@ Setup.makeBoard();
 // static functions are able to be used without creating another instance of the class
 
 // gameSetup.makeBoard();
+
+// setup snake & apple on board
+// snake needs to come after apple, since it depends on it
+Snake.createSnake();
+Apple.spawnApple();
 
