@@ -37,13 +37,8 @@ canvas.focus();
 canvas.height = rows * cellSize;
 canvas.clientWidth = cols * cellSize;
 
-// retrieving highScore from localStorage.. if it exists..
-let storedHighScore = localStorage.getItem('high-score');
-
-// if exists, update highScore to user
-if (storedHighScore) {
-    highScore.innerText = `high score: ${storedHighScore}`;
-};
+// clear localStorage
+// localStorage.clear();
 
 const directions = [
     { x: 0, y: -cellSize },
@@ -72,6 +67,21 @@ canvas.addEventListener('keydown', (e) => {
     };
 });
 
+// playBtn addEventListener:
+playButton.addEventListener('click', () => {
+
+    // console.log('test')
+
+    // game will be setup on first page load. when user loses, game will automatically re-setup. logic here will need just run
+
+    canvas.focus();
+
+    // snake needs to come after apple, since it depends on it
+    Snake.createSnake();
+    Apple.spawnApple();
+
+});
+
 //
 
 class Snake {
@@ -79,6 +89,17 @@ class Snake {
         this.pos = []; // coords will be pushed here
         this.dir = dir;
         this.body = []; // array of snake coordinates (body) 🐍
+    }
+
+    // create snake on game start
+    static createSnake() {
+        let x1 = 4 * cellSize;
+        let y1 = 7 * cellSize;
+
+        Board.draw(x1, y1, snakeColor);
+        Board.draw(x1+cellSize, y1, snakeColor);
+        Snake.body.push({ x: x1 + cellSize, y: y1 }); // head
+        Snake.body.push({ x: x1, y: y1 }); // tail
     }
 
     // spawn snake (draw snake when you have coordinates)
@@ -153,7 +174,7 @@ class Apple {
         this.y = y;
     }
 
-    spawnApple() {
+    static spawnApple() {
         let x1, y1, collision;
 
         do {
@@ -179,12 +200,8 @@ class Apple {
 
 // game (coordinates everything, sets intverals, detects collisions, updates score)
 class Game {
-    constructor(dir, x, y, x1, y1, gameOver, gameRunning) {
-        // this.x = x;
-        // this.y = y;
-        // this.x1 = x1;
-        // this.y1 = y1;
-        this.dir = 'right';
+    constructor(dir, gameOver, gameRunning) {
+        this.dir = dir;
         this.gameOver = gameOver;
         this.gameRunning = gameRunning;
     }
@@ -229,8 +246,9 @@ class Board {
         this.color = color;
     }
 
-    draw(x, y, color) {
-        context.fillRect(x, y, color);
+    static draw(x, y, color) {
+        context.fillStyle = color;
+        context.fillRect(x, y, cellSize, cellSize);
     }
 }
 
@@ -239,6 +257,32 @@ class Board {
 class Setup {
     constructor() {
         this.status = true;
+    }
+
+    static resetStats() {
+        // resetting stats:
+        dir = 'right'; // right by default
+        gameRunning = false;
+        score = 0;
+
+    }
+
+    // method to display highscore based on localstorage
+    static displayScore() {
+        // retrieving highScore from localStorage.. if it exists..
+        let storedHighScore = localStorage.getItem('high-score');
+
+        // if exists, update highScore to user
+        if (storedHighScore) {
+            // update highscore if current score is higher
+            if (score > storedHighScore) {
+                highScore.innerText = `high score: ${score}`
+                localStorage.setItem('high-score', score)
+            }
+        } else {
+            // if doesn't exist, set it using current score or 0
+            localStorage.setItem('high-score', score)
+        }
     }
 
     static makeBoard() {
