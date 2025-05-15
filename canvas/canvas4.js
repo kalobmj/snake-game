@@ -1,6 +1,9 @@
 
 // review some of ur var, ur classes have constructors that can replace some of these // 
 
+// 5/15
+    // game is mostly working, just need to clean up the classes and add finishing touches like confetti on new high score and such
+
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d'); // canvas context
 
