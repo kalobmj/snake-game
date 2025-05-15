@@ -3,6 +3,11 @@
 
 // 5/15
     // game is mostly working, just need to clean up the classes and add finishing touches like confetti on new high score and such
+    // clean up classes
+        // remove constructors where they are not being used
+        // move class methods into the correct class that makes sense
+    // clean up code
+    // look over var that are replaced by classes.
 
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d'); // canvas context
