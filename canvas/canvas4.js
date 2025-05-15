@@ -20,9 +20,9 @@ const color2 = '#8bb042'; // dark green
 const snakeColor = '#3498db'; // blue 🟦
 const appleColor = '#ff3636'; // red 🔴
 
-let dir = 'right'; // right by default
+// let dir = 'right'; // right by default
 // let apple = []; // 🍎
-let snake = []; // 🐍
+// let snake = []; // 🐍
 
 let gameInterval;
 let gameRunning = false;
@@ -35,7 +35,7 @@ canvas.focus();
 
 // dimensions
 canvas.height = rows * cellSize;
-canvas.clientWidth = cols * cellSize;
+canvas.width = cols * cellSize;
 
 // clear localStorage
 // localStorage.clear();
@@ -52,32 +52,37 @@ const directions = [
 // arrow key add event listeners here:
 // board addEventListener ArrowLeft, ArrowUp, ArrowDown, ArrowRight
 canvas.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' && dir != 'left') {
-        console.log('right arrow key pressed');
-        dir = 'right';
-    } else if (e.key === 'ArrowLeft' && dir != 'right') {
-        console.log('left arrow key pressed');
-        dir = 'left';
-    } else if (e.key === 'ArrowUp' && dir != 'down') {
-        console.log('up arrow key pressed');
-        dir = 'up';
-    } else if (e.key === 'ArrowDown' && dir != 'up') {
-        console.log('down arrow key pressed');
-        dir = 'down';
-    };
+
+    if (gameRunning) {
+        if (e.key === 'ArrowRight' && Game.dir != 'left') {
+            console.log('right arrow key pressed');
+            Game.dir = 'right';
+        } else if (e.key === 'ArrowLeft' && Game.dir != 'right') {
+            console.log('left arrow key pressed');
+            Game.dir = 'left';
+        } else if (e.key === 'ArrowUp' && Game.dir != 'down') {
+            console.log('up arrow key pressed');
+            Game.dir = 'up';
+        } else if (e.key === 'ArrowDown' && Game.dir != 'up') {
+            console.log('down arrow key pressed');
+            Game.dir = 'down';
+            // console.log(Game.dir)
+        }
+    }
+
 });
 
 // playBtn addEventListener:
 playButton.addEventListener('click', () => {
 
-    // console.log('test')
-
     // game will be setup on first page load. when user loses, game will automatically re-setup. logic here will need just run
+
+    gameRunning = true;
 
     canvas.focus();
 
     // hitting play will start game here:
-    
+    gameInterval = setInterval(runGame.running, fps);
 
 });
 
@@ -104,15 +109,29 @@ class Snake {
     }
 
     // spawn snake (draw snake when you have coordinates)
-    drawSnake(body) {
+    static drawSnake(body) {
         for (const cell of body) {
             Board.draw(cell.x, cell.y, snakeColor)
         };
     };
 
-    move() {
+    static move() {
+
+        // checking if snakeHead location is out of bounds...
+        if (Game.checkBounds(Snake.body[0].x, Snake.body[0].y)) {
+            // check down the line will run endGame logic
+            EndGame.over = true;
+        }
+
+        console.log('we are in Snake.move()')
+
         let x = Snake.body[0].x;
         let y = Snake.body[0].y;
+
+        console.log(Game.dir)
+
+        console.log({ x });
+        console.log({ y });
 
         if (Game.dir === 'right') {
             x += directions[1].x;
@@ -124,45 +143,111 @@ class Snake {
             y += directions[2].y;
         };
 
+        console.log({ x });
+        console.log({ y });
+
+        console.log(EndGame.over)
+
         // check snakeHead out of bounds
         if (Game.checkBounds(x, y)) {
+            console.log('snakeHead out of bounds...')
+            console.log(EndGame.over)
+
             EndGame.over = true;
+
+            console.log(EndGame.over)
         };
 
         // check gameState
         if (!EndGame.over) {
+
+            (console.log('we are in moveSnake where Endgame.over is false'));
+
+            console.log(Snake.body);
+
             // if game not over
             // pop removes tail (moves snake)
             let newHead = Snake.body.pop();
 
+            console.log({ newHead })
+            console.log(Snake.body);
+
             // copy old tail for if snake eats apple (we keep it)
             let oldTail = { ...newHead };
 
+            console.log(Snake.body);
+            console.log({ newHead })
+
             // replace tail with coordinates of updated head
-            newHead.x = Snake.body[0].x;
-            newHead.y = Snake.body[0].y;
+            newHead.x = x;
+            newHead.y = y;
+
+            console.log(Snake.body);
+
+            console.log({ newHead });
+            console.log({ oldTail });
 
             // check body collision logic here :
             for (const cell of Snake.body) {
                 if (Game.checkCollision(newHead.x, newHead.y, cell.x, cell.y)) {
+                    console.log('found body collision')
                     EndGame.over = true;
-                    gameOver();
+                    EndGame.gameOver();
                     return;
                 }
             }
 
+            console.log('no collisions with snake body and newHead found...')
+
+            // if no collisions with new head, logic here will be adding the new head
+
             // check for collision with apple (snake eats apple 😋)
-            if (Game.checkCollision(Snake.body[0].x, Snake.body[0].y, Apple.x, Apple.y)) {
+            if (Game.checkCollision(newHead.x, newHead.y, Apple.x, Apple.y)) {
                 // keep old tail, and move new head to front
+
+                console.log('newHead collides with apple');
+
+                // add +1 to score
+                score++;
+
+                console.log(Snake.body)
+
                 Snake.body.unshift(newHead);
-                snake.body.push(oldTail);
+                Snake.body.push(oldTail);
+
+                console.log(Snake.body);
+
+                // spawn new apple (method updates Apple x and y)
+                Setup.displayScore();
+                Apple.spawnApple();
+
             } else {
+
+                console.log('newHead does not collide with apple');
+
+                console.log(Snake.body)
+
                 // no apple eaten 🥲
                 Snake.body.unshift(newHead);
+
+                console.log(Snake.body)
+
+                // color old tail
+                const isEven = ((oldTail.x + oldTail.y) / cellSize) % 2 === 0;
+                const color = isEven ? color1 : color2;
+                // context.fillStyle
+                Board.draw(oldTail.x, oldTail.y, color);
+
+
             }
         } else {
+
+            (console.log('we are in moveSnake where Endgame.over is true'));
+
+            console.log(EndGame.over) // false
+
             // end game method
-            gameOver();
+            EndGame.gameOver();
             return;
         }
     }
@@ -202,10 +287,12 @@ class Apple {
 // game (coordinates everything, sets intverals, detects collisions, updates score)
 class Game {
     constructor(dir, gameOver, gameRunning) {
-        this.dir = dir;
+        // this.dir = dir;
         this.gameOver = gameOver;
         this.gameRunning = gameRunning;
     }
+
+    static dir = 'right'; // defaults to right
 
     // sets intervals
 
@@ -221,16 +308,19 @@ class Game {
         }
     }
 
-    checkBounds(x, y) {
+    static checkBounds(x, y) {
         if (x < 0 || y < 0 || x >= (cols * cellSize) || y >= (rows * cellSize)) {
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         };
     }
 
-    checkStatus(EndGame) {
+    static checkStatus(EndGame) {
         if (EndGame.over) {
+
+            console.log({ score })
+            Setup.displayScore();
 
             // logic to end game
             // call EndGame.gameOver()
@@ -262,19 +352,32 @@ class Setup {
 
     static resetStats() {
         // resetting stats:
-        dir = 'right'; // right by default
+        Game.dir = 'right'; // right by default
         gameRunning = false;
         score = 0;
+        Snake.body = [];
+        userScore.innerHTML = `score: 0`;
+        // game is not over anymore
+        EndGame.over = false;
 
     }
 
     // method to display highscore based on localstorage
     static displayScore() {
+
+        // updating score per interval
+        console.log({ score });
+        userScore.innerText = `score: ${score}`;
+
         // retrieving highScore from localStorage.. if it exists..
         let storedHighScore = localStorage.getItem('high-score');
 
         // if exists, update highScore to user
         if (storedHighScore) {
+
+            // display highScore if it exists in localStorage
+            highScore.innerText = `high score: ${storedHighScore}`
+
             // update highscore if current score is higher
             if (score > storedHighScore) {
                 highScore.innerText = `high score: ${score}`
@@ -298,13 +401,22 @@ class Setup {
     }
 }
 
-// class CheckGame
-
-class CheckGame {
+// class runGame
+// main obj to run the game (this will run every interval)
+class runGame {
 
     constructor() {
         this.status = true;
     }
+
+    static running() {
+
+        Snake.move(); // move snake
+        Snake.drawSnake(Snake.body) // draw snake after moving it
+
+    }
+
+    // logic for checking vars
 
 }
 
@@ -313,28 +425,38 @@ class CheckGame {
 class EndGame {
     constructor() {
         // game over default false
-        this.over = false;
+        this.status = false;
     }
 
-    gameOver() {
+    static over = false;
 
+    static gameOver() {
 
+        console.log('game over!')
+
+        // clear interval running game
+        clearInterval(gameInterval)
+
+        // setup game again
+        Setup.makeBoard();
+        // displayScore first since we are resetting score right after
+        Setup.displayScore();
+        Setup.resetStats();
+
+        // snake needs to come after apple, since it depends on it
+        Snake.createSnake();
+        Apple.spawnApple();
 
     }
 }
 
-// have to 
-// const gameSetup = new Setup();
-
 // // setup board
 Setup.makeBoard();
 
-// static functions are able to be used without creating another instance of the class
-
-// gameSetup.makeBoard();
+// display high score
+Setup.displayScore();
 
 // setup snake & apple on board
 // snake needs to come after apple, since it depends on it
 Snake.createSnake();
 Apple.spawnApple();
-
